@@ -70,7 +70,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		BeginAADraw();
 		for (int i = 0; i < kParticleNum; i++)
 		{
-			DrawCircleAA(pos[i].x, pos[i].y, 4 * (vec[i].length() / 4.0f), 32, 0x808020, true);
+			float rate = (vec[i].length() / 4.0f);
+		//	DrawCircleAA(pos[i].x, pos[i].y, 4 * rate, 32, 0x808020, true);
+			// 遠くのもの(落下速度が遅いもの)は小さく、暗く描画する
+			DrawCircleAA(pos[i].x, pos[i].y, 4 * rate, 32, GetColor(128*rate,128*rate,32*rate), true);
 		}
 		EndAADraw();
 		SetDrawScreen(DX_SCREEN_BACK);
@@ -79,6 +82,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		DrawExtendGraph(0, 0, Game::kScreenWidth, Game::kScreenHeight, gameScreen, false);
 
+		DrawFormatString(32, 32, 0xffffff, "FPS = %f", GetFPS());
+		DrawFormatString(32, 64, 0xffffff, "DC = %d", GetDrawCallCount());
+
+		DrawFormatString(32, 720 + sinf(sinRate) * 16, 0x000000, "画面を光らせる処理を応用して光るパーティクル ゲーム画面は光ってない");
+		DrawFormatString(32, 736 + sinf(sinRate) * 16, 0x000000, "画面サイズの描画を繰り返しているので処理は重い(はず)");
+		DrawFormatString(32, 780 + sinf(sinRate) * 16, 0x000000, "プレイヤーに注目してもらいたい部分は動かす(この文章のこと)");
 		
 		//加算合成する
 		SetDrawBlendMode(DX_BLENDMODE_ADD, 192);
@@ -98,13 +107,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 		//元に戻す
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
-		DrawFormatString(32, 32, 0xffffff, "FPS = %f",GetFPS());
-		DrawFormatString(32, 64, 0xffffff, "DC = %d", GetDrawCallCount());
-
-		DrawFormatString(32, 720 + sinf(sinRate) * 16, 0xffffff, "画面を光らせる処理を応用して光るパーティクル ゲーム画面は光ってない");
-		DrawFormatString(32, 736 + sinf(sinRate) * 16, 0xffffff, "画面サイズの描画を繰り返しているので処理は重い(はず)");
-		DrawFormatString(32, 780 + sinf(sinRate) * 16, 0xffffff, "プレイヤーに注目してもらいたい部分は動かす(この文章のこと)");
 
 		//裏画面を表画面を入れ替える
 		ScreenFlip();
