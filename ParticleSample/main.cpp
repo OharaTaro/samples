@@ -236,8 +236,68 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 			auraFrame = kAuraInterval;
 		}
+		BeginAADraw();
+		for (int i = 0; i < 64; i++)
+		{
+			// 回転をゆっくりにする+角度ちょっと揺らす
+			float tempAngle = (sinRate / 16.0f) + static_cast<float>(GetRand(16)) / 64.0f / DX_PI_F;
 
+			float startDist = GetRand(32) + 16.0f;
+			float endDist = GetRand(64) + 64.0f;
 
+			float startX = cosf(tempAngle) * startDist + 240.0f;
+			float startY = sinf(tempAngle) * startDist + 640.0f;
+
+			float endX = cosf(tempAngle) * endDist + 240.0f;
+			float endY = sinf(tempAngle) * endDist + 640.0f;
+
+			//	DrawLineAA(startX, startY, endX, endY, 0xffffff, 2.0f);
+
+			SetDrawBlendMode(DX_BLENDMODE_ADD, 128);
+			DrawLineAA(startX, startY, endX, endY, 0x101080, 2.0f);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}
+
+		for (int i = 0; i < 256; i++)
+		{
+			float tempAngle = static_cast<float>(i) / 256.0f * DX_TWO_PI_F;
+
+			float startX = 480.0f;
+			float startY = 640.0f;
+			
+			float len = 32.0f + abs(sinf(tempAngle*32)) * 16.0f + GetRand(32);
+
+			float endX = cosf(tempAngle) * len + 480.0f;
+			float endY = sinf(tempAngle) * len + 640.0f;
+
+			SetDrawBlendMode(DX_BLENDMODE_ADD, 128);
+			DrawLineAA(startX, startY, endX, endY, 0x101080, 2.0f);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}
+		EndAADraw();
+#if false
+		constexpr int kLineNum = 256;
+		for (int i = 0; i < kLineNum; i++)
+		{
+			float rate = static_cast<float>(i) / static_cast<float>(kLineNum/16);
+			float tempAngle = DX_TWO_PI_F * rate;
+
+			float startDist = GetRand(32) + 16.0f;
+			float endDist = GetRand(64) + 64.0f;
+
+			float startX = cosf(tempAngle) * startDist + 240.0f;
+			float startY = sinf(tempAngle) * startDist + 640.0f;
+
+			float endX = cosf(tempAngle) * endDist + 240.0f;
+			float endY = sinf(tempAngle) * endDist + 640.0f;
+
+		//	DrawLineAA(startX, startY, endX, endY, 0xffffff, 2.0f);
+
+			SetDrawBlendMode(DX_BLENDMODE_ADD, 128);
+			DrawLineAA(startX, startY, endX, endY, 0x101080);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}
+#endif
 		// draw
 		DrawString(16, 8, "パーティクル(という名のただの丸)を移動させて演出を行う", 0xffffff);
 
@@ -247,13 +307,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		DrawString(mouseX, mouseY + 64, "マウスのまわりを回るようにパーティクル生成", 0xffffff);
 
+		DrawString(240, 640+128, "丸じゃなくてDrawLine()を使った演出", 0xffffff);
+
 		int count = 0;
+		BeginAADraw();
 		for (auto& pPart : particle)
 		{
 			if (!pPart->isExist())	continue;
 			pPart->draw();
 			count++;
 		}
+		EndAADraw();
 		DrawFormatString(24, 24, 0xffffff, "Particle Num : %d", count);
 		DrawFormatString(24, 40, 0xffffff, "DrawCall : %d", GetDrawCallCount());
 
