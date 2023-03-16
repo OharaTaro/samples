@@ -1,3 +1,4 @@
+DispStringSample:RPGのように文字を1文字ずつ表示したり、1文字ずつ位置を変更したりするサンプル<br>
 ParticleSample:パーティクルを使ってエフェクト的表現を行うサンプル<br>
 ParticleSample2:光るパーティクルのサンプル<br>
 UiSample:UIを作る時にやっておいた方がいいことのサンプル<br>
