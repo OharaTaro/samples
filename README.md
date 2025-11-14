@@ -1,5 +1,9 @@
 DispStringSample:RPGのように文字を1文字ずつ表示したり、1文字ずつ位置を変更したりするサンプル<br>
+FilterSample:DXライブラリの関数を使って画像に様々な効果をかけるサンプル<br>
+GaugeSample:画像を使用してHPゲージのようなゲージを表示するためのサンプル<br>
+MovieSample:DXライブラリでムービーを再生するためのサンプル<br>
 ParticleSample:パーティクルを使ってエフェクト的表現を行うサンプル<br>
 ParticleSample2:光るパーティクルのサンプル<br>
+SinSample:三角関数を使用して様々な軌道を表現するためのサンプル<br>
 UiSample:UIを作る時にやっておいた方がいいことのサンプル<br>
 UiSample2:ウインドウ表示用のグラフィック素材を使用して可変サイズのウインドウを表示するサンプル<br>
